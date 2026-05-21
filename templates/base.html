@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HR-Copilot{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <div class="page-bg"></div>
+    <header class="header">
+        <div class="logo">
+            <span class="logo-icon" aria-hidden="true">✈</span>
+            <span class="logo-text">HR-Copilot</span>
+        </div>
+        <p class="tagline">твой второй пилот при поиске работы и подготовке к собеседованию на каждом этапе</p>
+        <div class="service-announcements" aria-label="Сервисы HR-Copilot">
+            <span class="service-announcement">Резюме</span>
+            <span class="service-announcement">Сопроводительное письмо</span>
+            <span class="service-announcement">Самопрезентация</span>
+            <span class="service-announcement">Вопросы на собеседовании</span>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>HR-Copilot &copy; 2026 — локальный нейропомощник для подготовки к собеседованиям</p>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

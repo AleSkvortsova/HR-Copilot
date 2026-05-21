@@ -1,0 +1,278 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="upload-section card" id="upload-section">
+    <h2 class="section-title">Загрузи резюме</h2>
+    <p class="section-desc">Файл с резюме в PDF или Word, данные о вакансии — для рекомендаций под конкретную позицию.</p>
+
+    <form id="resume-form" class="upload-form" enctype="multipart/form-data">
+        <label class="dropzone dropzone--compact" id="dropzone" for="resume-input">
+            <input type="file" id="resume-input" name="resume" accept=".pdf,.docx" hidden>
+            <span class="dropzone-icon" aria-hidden="true">📄</span>
+            <span class="dropzone-title">Резюме: PDF или .docx</span>
+            <span class="dropzone-hint">перетащи файл или нажми для выбора</span>
+            <span class="dropzone-file" id="file-name"></span>
+        </label>
+
+        <fieldset class="vacancy-fields">
+            <legend class="section-title vacancy-fields-legend">Загрузи данные о вакансии</legend>
+
+            <label class="field">
+                <span class="field-label">Название должности</span>
+                <input
+                    type="text"
+                    id="vacancy-title"
+                    name="vacancy_title"
+                    class="field-input"
+                    placeholder="Например, менеджер по продажам"
+                    autocomplete="off"
+                >
+            </label>
+
+            <label class="field">
+                <span class="field-label">Название компании, сайт, сфера деятельности</span>
+                <input
+                    type="text"
+                    id="company-name"
+                    name="company_name"
+                    class="field-input"
+                    placeholder="Например, Zerocoder https://zerocoder.ru/"
+                    autocomplete="off"
+                >
+            </label>
+
+            <label class="field">
+                <span class="field-label">Описание вакансии</span>
+                <textarea
+                    id="vacancy-description"
+                    name="vacancy_description"
+                    class="field-input field-textarea"
+                    rows="6"
+                    placeholder="Скопируйте текст вакансии с hh.ru или другого сайта"
+                ></textarea>
+            </label>
+        </fieldset>
+    </form>
+</section>
+
+<section class="services-section">
+    <h2 class="section-title services-title">Повысь свои шансы найти работу на каждом этапе</h2>
+    <div class="services-grid">
+        <article class="service-card service-card--active" data-service="improve">
+            <span class="service-badge">доступно</span>
+            <h3 class="service-title">Резюме</h3>
+            <p class="service-desc">Получи рекомендации по улучшению</p>
+            <button type="submit" form="resume-form" class="btn btn-primary" id="submit-btn">
+                Запросить
+            </button>
+        </article>
+
+        <article class="service-card service-card--active" data-service="cover-letter">
+            <span class="service-badge">доступно</span>
+            <h3 class="service-title">Сопроводительное письмо</h3>
+            <p class="service-desc">Получи проект письма по вакансии</p>
+            <button type="button" class="btn btn-primary" id="cover-letter-btn">
+                Запросить
+            </button>
+        </article>
+
+        <article class="service-card service-card--active" data-service="self-presentation">
+            <span class="service-badge">доступно</span>
+            <h3 class="service-title">Самопрезентация</h3>
+            <p class="service-desc">Как рассказать о себе и своем опыте</p>
+            <button type="button" class="btn btn-primary" id="self-presentation-btn">
+                Запросить
+            </button>
+        </article>
+
+        <article class="service-card service-card--active" data-service="classic-questions">
+            <span class="service-badge">доступно</span>
+            <h3 class="service-title">Классические вопросы</h3>
+            <p class="service-desc">Потренеруйся заранее</p>
+            <button type="button" class="btn btn-primary" id="classic-questions-btn">
+                Запросить
+            </button>
+        </article>
+
+        <article class="service-card service-card--active" data-service="vacancy-questions">
+            <span class="service-badge">доступно</span>
+            <h3 class="service-title">5 возможных вопросов</h3>
+            <p class="service-desc">Что могут спросить на собеседовании по вакансии</p>
+            <button type="button" class="btn btn-primary" id="vacancy-questions-btn">
+                Запросить
+            </button>
+        </article>
+
+        <article class="service-card service-card--soon" data-service="salary-negotiation">
+            <span class="service-badge service-badge--soon">скоро</span>
+            <h3 class="service-title">Вопрос о зарплате</h3>
+            <p class="service-desc">Составь стратегию переговоров</p>
+        </article>
+    </div>
+</section>
+
+<section class="result-section card hidden" id="result-section" aria-live="polite">
+    <div class="result-header">
+        <h2 class="section-title" id="result-title">Рекомендации по резюме</h2>
+        <span class="result-meta" id="result-meta"></span>
+    </div>
+    <div class="result-content markdown-body" id="result-content"></div>
+</section>
+
+<section class="classic-section card hidden" id="classic-section" aria-live="polite">
+    <h2 class="section-title">Классические вопросы</h2>
+    <p class="section-desc">Выберите вопрос, раскройте блок и подготовьте ответ под ваше резюме и вакансию.</p>
+
+    <div class="classic-questions-list">
+        <article class="classic-question" data-question-type="fit">
+            <button type="button" class="classic-question-toggle">
+                <span>Почему ты считаешь, что подходишь на эту должность?</span>
+                <span class="classic-question-play" aria-hidden="true"></span>
+            </button>
+            <div class="classic-question-panel hidden"></div>
+        </article>
+
+        <article class="classic-question" data-question-type="star" data-question="Приведи пример твоего самого удачного опыта работы в команде. Какова была твоя роль?">
+            <button type="button" class="classic-question-toggle">
+                <span>Приведи пример твоего самого удачного опыта работы в команде. Какова была твоя роль?</span>
+                <span class="classic-question-play" aria-hidden="true"></span>
+            </button>
+            <div class="classic-question-panel hidden"></div>
+        </article>
+
+        <article class="classic-question" data-question-type="star" data-question="Опиши случай, когда у тебя было серьезное разногласие с коллегой. Как ты вышел из этой ситуации?">
+            <button type="button" class="classic-question-toggle">
+                <span>Опиши случай, когда у тебя было серьезное разногласие с коллегой. Как ты вышел из этой ситуации?</span>
+                <span class="classic-question-play" aria-hidden="true"></span>
+            </button>
+            <div class="classic-question-panel hidden"></div>
+        </article>
+
+        <article class="classic-question" data-question-type="star" data-question="Расскажи о твоем самом профессиональном провале или неудаче. Какие в итоге уроки ты извлек?">
+            <button type="button" class="classic-question-toggle">
+                <span>Расскажи о твоем самом профессиональном провале или неудаче. Какие в итоге уроки ты извлек?</span>
+                <span class="classic-question-play" aria-hidden="true"></span>
+            </button>
+            <div class="classic-question-panel hidden"></div>
+        </article>
+
+        <article class="classic-question" data-question-type="star" data-question="Приведи пример, когда ты получил негативную обратную связь на свою работу. Каковы были твои действия?">
+            <button type="button" class="classic-question-toggle">
+                <span>Приведи пример, когда ты получил негативную обратную связь на свою работу. Каковы были твои действия?</span>
+                <span class="classic-question-play" aria-hidden="true"></span>
+            </button>
+            <div class="classic-question-panel hidden"></div>
+        </article>
+
+        <article class="classic-question" data-question-type="weakness">
+            <button type="button" class="classic-question-toggle">
+                <span>Какова твоя главная слабость?</span>
+                <span class="classic-question-play" aria-hidden="true"></span>
+            </button>
+            <div class="classic-question-panel hidden"></div>
+        </article>
+
+        <article class="classic-question" data-question-type="exit">
+            <button type="button" class="classic-question-toggle">
+                <span>Почему ты решил сменить работу?</span>
+                <span class="classic-question-play" aria-hidden="true"></span>
+            </button>
+            <div class="classic-question-panel hidden"></div>
+        </article>
+    </div>
+</section>
+
+<section class="vacancy-questions-section card hidden" id="vacancy-questions-section" aria-live="polite">
+    <div class="result-header">
+        <h2 class="section-title">5 возможных вопросов</h2>
+        <span class="result-meta">Подготовка под конкретную вакансию</span>
+    </div>
+    <div class="result-content markdown-body" id="vacancy-questions-content"></div>
+</section>
+
+<section class="self-presentation-section card hidden" id="self-presentation-section" aria-live="polite">
+    <h2 class="section-title">Самопрезентация</h2>
+    <p class="self-presentation-disclaimer">
+        Первые несколько минут задают тон всему собеседованию, и очень часто HR-менеджер просит в этот момент: «Расскажите о себе».
+        И тут многие начинают пересказывать резюме от первого места работы до последнего. Твоя цель — не биография,
+        а короткий, ёмкий «трейлер» твоей профессиональной жизни, желательно с акцентами под конкретную вакансию.
+    </p>
+    <div class="letter-editor-toolbar">
+        <button type="button" class="btn btn-secondary" id="copy-self-presentation-btn">Скопировать</button>
+        <button
+            type="button"
+            class="btn-icon"
+            id="edit-self-presentation-btn"
+            title="Редактировать текст"
+            aria-label="Редактировать текст"
+        >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 20h4l10.5-10.5a1.5 1.5 0 0 0 0-2.12L15.62 4.38a1.5 1.5 0 0 0-2.12 0L3 15v5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M13.5 6.5l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
+    <textarea
+        id="self-presentation-text"
+        class="letter-editor field-input"
+        rows="14"
+        readonly
+        placeholder="Здесь появится текст самопрезентации"
+    ></textarea>
+</section>
+
+<section class="cover-letter-section card hidden" id="cover-letter-section" aria-live="polite">
+    <h2 class="section-title">Сопроводительное письмо</h2>
+    <p class="cover-letter-disclaimer">
+        Используй сгенерированный текст как черновик, поправь формулировки своим языком.
+        Сохраняй свою индивидуальность, добавляя в текст личные истории и эмоции!
+    </p>
+    <div class="letter-editor-toolbar">
+        <button type="button" class="btn btn-secondary" id="copy-letter-btn">Скопировать</button>
+        <button
+            type="button"
+            class="btn-icon"
+            id="edit-letter-btn"
+            title="Редактировать текст"
+            aria-label="Редактировать текст"
+        >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 20h4l10.5-10.5a1.5 1.5 0 0 0 0-2.12L15.62 4.38a1.5 1.5 0 0 0-2.12 0L3 15v5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M13.5 6.5l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
+    <textarea
+        id="cover-letter-text"
+        class="letter-editor field-input"
+        rows="14"
+        readonly
+        placeholder="Здесь появится текст письма"
+    ></textarea>
+</section>
+
+<div class="loading-overlay hidden" id="loading-overlay" role="status" aria-label="Загрузка">
+    <div class="spinner"></div>
+    <p class="loading-text" id="loading-text">Анализируем резюме…</p>
+    <p class="loading-hint">Обычно это занимает 15–40 секунд</p>
+</div>
+
+<div class="confirm-overlay hidden" id="optional-fields-dialog" role="dialog" aria-modal="true" aria-labelledby="optional-fields-dialog-title">
+    <div class="confirm-dialog card">
+        <p class="confirm-dialog-text" id="optional-fields-dialog-title">
+            Ответ будет точнее, если ты заполнишь данные о компании и рассматриваемой вакансии
+        </p>
+        <div class="confirm-dialog-actions">
+            <button type="button" class="btn btn-secondary" id="optional-fill-btn">Заполнить</button>
+            <button type="button" class="btn btn-primary" id="optional-continue-btn">Продолжить как есть</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast hidden" id="toast" role="alert"></div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}
