@@ -4,6 +4,17 @@
 
 Локальный веб-сервис на Flask, который помогает адаптировать резюме, подготовить сопроводительное письмо, самопрезентацию и ответы на вопросы для собеседования с помощью OpenAI.
 
+## Технический стек
+
+- **Backend** — Python 3, [Flask](https://flask.palletsprojects.com/) 3
+- **ИИ** — [OpenAI API](https://platform.openai.com/) (по умолчанию `gpt-4o-mini`)
+- **Парсинг файлов** — [pypdf](https://pypi.org/project/pypdf/) (PDF), [python-docx](https://python-docx.readthedocs.io/) (Word)
+- **Конфигурация** — [python-dotenv](https://pypi.org/project/python-dotenv/) (переменные из `.env`)
+- **Frontend** — HTML (Jinja2-шаблоны), CSS, vanilla JavaScript
+- **UI** — шрифт [Manrope](https://fonts.google.com/specimen/Manrope), [marked](https://marked.js.org/) для рендера Markdown в ответах
+
+Зависимости перечислены в `requirements.txt`. Для production-деплоя обычно добавляют WSGI-сервер [Gunicorn](https://gunicorn.org/).
+
 ## Возможности
 
 - **Резюме** — рекомендации по улучшению резюме под должность или вакансию.
